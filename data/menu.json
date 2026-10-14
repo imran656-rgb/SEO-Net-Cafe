@@ -1,0 +1,27 @@
+[
+  {
+    "category": "Coffee",
+    "items": [
+      { "name": "Espresso", "price": 3.00, "description": "Rich and bold single shot" },
+      { "name": "Americano", "price": 3.50, "description": "Espresso with hot water" },
+      { "name": "Latte", "price": 4.50, "description": "Espresso with steamed milk" },
+      { "name": "Velvet Mocha", "price": 5.00, "description": "Rich blend of dark chocolate and espresso with cinnamon" },
+      { "name": "Cappuccino", "price": 4.00, "description": "Equal parts espresso, steamed milk, and foam" }
+    ]
+  },
+  {
+    "category": "Non-Coffee",
+    "items": [
+      { "name": "Matcha Latte", "price": 4.75, "description": "Premium green tea with steamed milk" },
+      { "name": "Hot Chocolate", "price": 3.75, "description": "Creamy cocoa with marshmallows" }
+    ]
+  },
+  {
+    "category": "Pastries",
+    "items": [
+      { "name": "Butter Croissant", "price": 3.25, "description": "Flaky and buttery French classic" },
+      { "name": "Vegan Blueberry Muffin", "price": 3.75, "description": "Fresh blueberries, dairy-free" },
+      { "name": "Chocolate Cookie", "price": 2.50, "description": "Chewy with dark chocolate chunks" }
+    ]
+  }
+]

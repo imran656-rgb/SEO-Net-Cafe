@@ -1,0 +1,293 @@
+<title>CafeBot Chat Interface</title>
+<style>
+  /*
+   * Layout: Fixed-height app with a flexible scroll area,
+   * using a warm, coffee-inspired palette and rounded elements.
+   */
+  :root {
+    --bg: #fdfaf7;
+    --surface: #ffffff;
+    --accent: #6f4e37; /* Coffee brown */
+    --accent-light: #a67b5b;
+    --text-main: #2d241e;
+    --text-muted: #7a6f66;
+    --bot-bubble: #f0ece9;
+    --user-bubble: #6f4e37;
+    --user-text: #ffffff;
+
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+    --radius: 18px;
+    --shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1a1614;
+      --surface: #251f1c;
+      --accent: #d2b48c; /* Tan/Light Coffee */
+      --accent-light: #e6ccb2;
+      --text-main: #ede0d8;
+      --text-muted: #a69b92;
+      --bot-bubble: #2d2623;
+      --user-bubble: #d2b48c;
+      --user-text: #1a1614;
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #1a1614;
+    --surface: #251f1c;
+    --accent: #d2b48c;
+    --accent-light: #e6ccb2;
+    --text-main: #ede0d8;
+    --text-muted: #a69b92;
+    --bot-bubble: #2d2623;
+    --user-bubble: #d2b48c;
+    --user-text: #1a1614;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Header */
+  .header {
+    padding: env(safe-area-inset-top, 0px) 20px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--bot-bubble);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow);
+    z-index: 10;
+  }
+
+  .header-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--accent);
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .header-info h1 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    margin: 0;
+    color: var(--text-main);
+  }
+
+  .header-info p {
+    font-size: 0.8rem;
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  /* Chat Area */
+  .chat-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-light) transparent;
+  }
+
+  .message {
+    max-width: 85%;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    position: relative;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .message.bot {
+    align-self: flex-start;
+    background: var(--bot-bubble);
+    color: var(--text-main);
+    border-bottom-left-radius: 4px;
+  }
+
+  .message.user {
+    align-self: flex-end;
+    background: var(--user-bubble);
+    color: var(--user-text);
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .timestamp {
+    display: block;
+    font-size: 0.7rem;
+    margin-top: 4px;
+    opacity: 0.7;
+    text-align: right;
+  }
+
+  /* Input Area */
+  .input-area {
+    padding: 16px 20px calc(env(safe-area-inset-bottom, 0px) + 16px);
+    background: var(--surface);
+    border-top: 1px solid var(--bot-bubble);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .input-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--bot-bubble);
+    border-radius: 24px;
+    background: var(--bg);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  input:focus {
+    border-color: var(--accent);
+  }
+
+  .send-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s, background 0.2s;
+    flex-shrink: 0;
+  }
+
+  .send-btn:hover {
+    background: var(--accent-light);
+  }
+
+  .send-btn:active {
+    transform: scale(0.9);
+  }
+
+  .send-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:wght@600&display=swap">
+
+<div class="header">
+  <div class="header-icon">☕</div>
+  <div class="header-info">
+    <h1>CafeBot</h1>
+    <p>Your friendly coffee assistant</p>
+  </div>
+</div>
+
+<div class="chat-container" id="chatContainer">
+  <!-- Mock Messages -->
+  <div class="message bot">
+    Hello! Welcome to the NetCafe. ☕ How can I help you today?
+    <span class="timestamp">09:00 AM</span>
+  </div>
+
+  <div class="message user">
+    Hi! What's your most popular coffee?
+    <span class="timestamp">09:01 AM</span>
+  </div>
+
+  <div class="message bot">
+    Our signature "Velvet Mocha" is a crowd favorite! It's a rich blend of dark chocolate and espresso with a touch of cinnamon. Would you like to see the full menu?
+    <span class="timestamp">09:01 AM</span>
+  </div>
+
+  <div class="message user">
+    Yes please, and do you have any vegan options?
+    <span class="timestamp">09:02 AM</span>
+  </div>
+
+  <div class="message bot">
+    Absolutely! We offer oat, almond, and soy milk for all our drinks. Our vegan Blueberry Muffin is also a great pairing with coffee. I'll pull up the menu for you now...
+    <span class="timestamp">09:02 AM</span>
+  </div>
+</div>
+
+<form class="input-area" id="chatForm">
+  <div class="input-wrapper">
+    <input type="text" id="userInput" placeholder="Ask about coffee, menu..." autocomplete="off">
+  </div>
+  <button type="submit" class="send-btn">
+    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+  </button>
+</form>
+
+<script>
+  const form = document.getElementById('chatForm');
+  const input = document.getElementById('userInput');
+  const container = document.getElementById('chatContainer');
+
+  function addMessage(text, sender) {
+    const msg = document.createElement('div');
+    msg.className = `message ${sender}`;
+
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    msg.innerHTML = `${text}<span class="timestamp">${time}</span>`;
+
+    container.appendChild(msg);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, 'user');
+    input.value = '';
+
+    // Mock bot response
+    setTimeout(() => {
+      addMessage("I'm currently in demo mode, but in the full version, I'd answer that for you! ☕", 'bot');
+    }, 800);
+  });
+
+  // Start at bottom
+  container.scrollTop = container.scrollHeight;
+</script>
